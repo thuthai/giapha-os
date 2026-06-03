@@ -99,7 +99,7 @@ export function getFilteredTreeData(
   });
 
   return {
-    person: personsMap.get(personId)!,
+    person: personsMap.get(personId),
     spouses: spousesList,
     children: childrenList,
   };
