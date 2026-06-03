@@ -4,17 +4,45 @@ import config from "./config";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-neutral flex flex-col selection:bg-amber-200 selection:text-amber-900 relative overflow-hidden">
-      {/* Decorative background grid and blurs */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-30%,#fef3c7,transparent)] pointer-events-none"></div>
+    <div
+      className="min-h-screen flex flex-col selection:bg-red-100 selection:text-red-900 relative overflow-hidden"
+      style={{ backgroundColor: "#F5EDD8" }}
+    >
+      {/* Họa tiết hình thoi truyền thống */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24 3 L45 24 L24 45 L3 24 Z' fill='none' stroke='%23C9A96E' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
+          backgroundSize: "48px 48px",
+        }}
+      />
 
-      <div className="absolute top-0 inset-x-0 h-screen overflow-hidden pointer-events-none flex justify-center">
-        <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-amber-300/20 rounded-full blur-[100px] mix-blend-multiply" />
-        <div className="absolute top-[20%] left-[-10%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-rose-200/20 rounded-full blur-[120px] mix-blend-multiply" />
-      </div>
+      {/* Ánh sáng vàng mờ phía trên */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 900px 500px at 50% -5%, rgba(184,134,11,0.18), transparent)",
+        }}
+      />
 
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-20 md:py-32 relative z-10 w-full">
+      {/* Ánh đỏ mờ bên trái */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "20%",
+          left: "-8%",
+          width: "45vw",
+          height: "45vw",
+          maxWidth: "600px",
+          maxHeight: "600px",
+          background: "rgba(139,32,32,0.07)",
+          filter: "blur(120px)",
+          borderRadius: "50%",
+        }}
+      />
+
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-20 md:py-28 relative z-10 w-full">
         <LandingHero siteName={config.siteName} />
       </main>
 
