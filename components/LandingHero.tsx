@@ -1,12 +1,7 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import {
-  ArrowRight,
-  BookOpen,
-  Network,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, BookOpen, Network, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 const fadeIn: Variants = {
@@ -14,20 +9,46 @@ const fadeIn: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.8, ease: "easeOut" },
   },
 };
 
-const staggerContainer: Variants = {
+const stagger: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.14, delayChildren: 0.05 },
   },
 };
+
+// Đường kẻ hoa văn truyền thống
+const OrnamentLine = ({ width = 220 }: { width?: number }) => (
+  <svg width={width} height="20" viewBox={`0 0 ${width} 20`} fill="none">
+    <line x1="0" y1="10" x2={width * 0.38} y2="10" stroke="#C9A96E" strokeWidth="0.8" />
+    <polygon
+      points={`${width * 0.41},10 ${width * 0.445},5 ${width * 0.48},10 ${width * 0.445},15`}
+      fill="#C9A96E"
+      opacity="0.7"
+    />
+    <circle cx={width * 0.5} cy="10" r="3.5" fill="#8B2020" />
+    <polygon
+      points={`${width * 0.52},10 ${width * 0.555},5 ${width * 0.59},10 ${width * 0.555},15`}
+      fill="#C9A96E"
+      opacity="0.7"
+    />
+    <line x1={width * 0.62} y1="10" x2={width} y2="10" stroke="#C9A96E" strokeWidth="0.8" />
+    <circle cx={width * 0.35} cy="10" r="1.5" fill="#C9A96E" opacity="0.5" />
+    <circle cx={width * 0.65} cy="10" r="1.5" fill="#C9A96E" opacity="0.5" />
+  </svg>
+);
+
+// Góc trang trí
+const Corner = ({ className = "" }: { className?: string }) => (
+  <svg className={className} width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <path d="M0 0 L20 0 L20 2.5 L2.5 2.5 L2.5 20 L0 20 Z" fill="#C9A96E" opacity="0.75" />
+    <rect x="21" y="21" width="4" height="4" fill="#8B2020" opacity="0.5" />
+  </svg>
+);
 
 interface LandingHeroProps {
   siteName: string;
@@ -36,119 +57,199 @@ interface LandingHeroProps {
 export default function LandingHero({ siteName }: LandingHeroProps) {
   return (
     <motion.div
-      className="max-w-5xl text-center space-y-12 w-full relative z-10"
+      className="max-w-4xl text-center w-full relative z-10 space-y-8"
       initial="hidden"
       animate="visible"
-      variants={staggerContainer}
+      variants={stagger}
     >
-      {/* Header */}
-      <motion.div
-        className="space-y-6 sm:space-y-8 flex flex-col items-center"
-        variants={fadeIn}
-      >
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-amber-800 bg-white/60 rounded-full shadow-[0_2px_10px_-3px_rgba(0,0,0,0.1)] border border-amber-200/50 relative overflow-hidden group"
-        >
-          <BookOpen className="size-4 text-amber-500" />
-          Gia phả số — Dòng họ Thái Hữu
-          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
-        </motion.div>
+      {/* Hoa văn đầu trang */}
+      <motion.div variants={fadeIn} className="flex justify-center">
+        <OrnamentLine width={220} />
+      </motion.div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-serif font-bold text-stone-900 tracking-tight leading-[1.1] max-w-4xl">
+      {/* Nhãn nhỏ */}
+      <motion.div variants={fadeIn} className="flex justify-center">
+        <span
+          className="inline-flex items-center gap-2 px-4 py-1.5 text-[11px] font-bold tracking-[0.25em] uppercase"
+          style={{
+            color: "#8B2020",
+            border: "1px solid #C9A96E",
+            backgroundColor: "rgba(253,247,228,0.85)",
+          }}
+        >
+          <BookOpen className="size-3" style={{ color: "#B8860B" }} />
+          Gia phả số · Dòng họ Thái Hữu
+        </span>
+      </motion.div>
+
+      {/* Tiêu đề chính */}
+      <motion.div variants={fadeIn} className="space-y-4">
+        <h1
+          className="font-serif font-bold tracking-tight leading-tight"
+          style={{
+            fontSize: "clamp(2.6rem, 6vw, 5rem)",
+            color: "#2C1810",
+          }}
+        >
           {siteName}
         </h1>
 
-        <p className="text-lg sm:text-xl md:text-2xl text-stone-600 max-w-2xl mx-auto leading-relaxed font-light">
+        {/* Dấu phân cách dưới tiêu đề */}
+        <div className="flex items-center justify-center gap-3">
+          <div className="h-px w-20" style={{ backgroundColor: "#C9A96E" }} />
+          <div
+            className="w-2.5 h-2.5 rotate-45"
+            style={{ backgroundColor: "#8B2020" }}
+          />
+          <div className="h-px w-20" style={{ backgroundColor: "#C9A96E" }} />
+        </div>
+
+        <p
+          className="text-lg sm:text-xl max-w-xl mx-auto leading-relaxed font-light"
+          style={{ color: "#6B4232" }}
+        >
           Gìn giữ và lưu truyền cội nguồn, giá trị truyền thống của dòng họ
           Thái Hữu qua từng thế hệ.
         </p>
       </motion.div>
 
-      {/* Câu đối */}
+      {/* Câu đối — khung cổ điển */}
       <motion.div variants={fadeIn} className="flex justify-center px-4">
-        <div className="relative inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-6 px-8 py-6 bg-white/70 rounded-2xl border border-amber-200/60 shadow-[0_4px_24px_-8px_rgba(180,120,0,0.15)]">
-          {/* Decorative left */}
-          <span className="hidden sm:block text-amber-300/60 text-4xl font-serif select-none">&ldquo;</span>
+        <div
+          className="relative px-10 sm:px-16 py-8 w-full max-w-2xl"
+          style={{
+            border: "1px solid #C9A96E",
+            backgroundColor: "rgba(253,247,228,0.9)",
+          }}
+        >
+          {/* Viền kép bên trong */}
+          <div
+            className="absolute inset-[6px] pointer-events-none"
+            style={{ border: "1px solid rgba(201,169,110,0.35)" }}
+          />
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-            <span className="text-lg sm:text-xl font-serif font-semibold text-stone-700 tracking-wide">
+          {/* Góc trang trí 4 cạnh */}
+          <Corner className="absolute top-0 left-0" />
+          <Corner className="absolute top-0 right-0 rotate-90" />
+          <Corner className="absolute bottom-0 left-0 -rotate-90" />
+          <Corner className="absolute bottom-0 right-0 rotate-180" />
+
+          {/* Nhãn câu đối */}
+          <p
+            className="text-[9px] font-bold tracking-[0.45em] uppercase mb-5"
+            style={{ color: "#B8860B" }}
+          >
+            Câu đối dòng họ
+          </p>
+
+          {/* Câu đối */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10">
+            <p
+              className="font-serif font-bold text-xl sm:text-2xl tracking-wide"
+              style={{ color: "#8B2020" }}
+            >
               Thái bình truyền nghĩa sáng
+            </p>
+            <span
+              className="hidden sm:block w-px h-10"
+              style={{ backgroundColor: "#C9A96E" }}
+            />
+            <span
+              className="block sm:hidden text-xl font-light"
+              style={{ color: "#C9A96E" }}
+            >
+              ·
             </span>
-            <span className="hidden sm:block w-px h-8 bg-amber-300/50" />
-            <span className="block sm:hidden text-amber-300/60 text-lg">—</span>
-            <span className="text-lg sm:text-xl font-serif font-semibold text-stone-700 tracking-wide">
+            <p
+              className="font-serif font-bold text-xl sm:text-2xl tracking-wide"
+              style={{ color: "#8B2020" }}
+            >
               Hữu đức kết tình thân
-            </span>
+            </p>
           </div>
 
-          {/* Decorative right */}
-          <span className="hidden sm:block text-amber-300/60 text-4xl font-serif select-none">&rdquo;</span>
-
-          {/* Bottom accent */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-linear-to-r from-transparent via-amber-400/40 to-transparent" />
+          <div className="flex justify-center mt-5">
+            <OrnamentLine width={160} />
+          </div>
         </div>
       </motion.div>
 
-      {/* CTA */}
-      <motion.div
-        className="pt-2 flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-4 sm:px-0 relative"
-        variants={fadeIn}
-      >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-16 bg-amber-500/30 blur-2xl rounded-full z-0 hidden sm:block" />
-
+      {/* Nút CTA */}
+      <motion.div variants={fadeIn}>
         <Link
           href="/login"
-          className="group inline-flex items-center justify-center gap-2 px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-white bg-primary border border-stone-800 hover:bg-stone-800 hover:border-stone-700 rounded-xl shadow-xl shadow-stone-900/10 hover:shadow-2xl hover:shadow-stone-900/20 transition-all duration-300 hover:-translate-y-1 active:translate-y-0 w-full sm:w-auto overflow-hidden relative"
+          className="group inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-10 sm:py-4 text-base font-bold transition-all duration-300 hover:-translate-y-1 active:translate-y-0"
+          style={{
+            backgroundColor: "#8B2020",
+            color: "#FAF0D7",
+            border: "1px solid #6B1818",
+            boxShadow: "0 4px 24px -6px rgba(139,32,32,0.45)",
+          }}
         >
-          <span className="relative z-10 flex items-center gap-3">
-            Đăng nhập để xem gia phả
-            <ArrowRight className="size-5 group-hover:translate-x-1.5 transition-transform" />
-          </span>
+          Xem Gia Phả
+          <ArrowRight className="size-4 group-hover:translate-x-1.5 transition-transform" />
         </Link>
       </motion.div>
 
       {/* Feature cards */}
       <motion.div
-        className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-left border-t border-stone-200/50 pt-12 relative"
-        variants={staggerContainer}
+        className="grid grid-cols-1 md:grid-cols-3 gap-5 text-left pt-10"
+        style={{ borderTop: "1px solid rgba(201,169,110,0.4)" }}
+        variants={stagger}
       >
         {[
           {
-            icon: <BookOpen className="size-6 text-amber-700" />,
+            icon: <BookOpen className="size-5" />,
             title: "Lưu trữ Gia phả",
             desc: "Ghi chép đầy đủ thông tin từng thành viên qua nhiều thế hệ — tên húy, ngày sinh, ngày mất, và các mối quan hệ huyết thống.",
           },
           {
-            icon: <Network className="size-6 text-amber-700" />,
+            icon: <Network className="size-5" />,
             title: "Cây Phả hệ Trực quan",
             desc: "Xem toàn bộ cây gia phả dạng sơ đồ, theo dõi từng nhánh họ và mối quan hệ giữa các thế hệ một cách dễ dàng.",
           },
           {
-            icon: <ShieldCheck className="size-6 text-amber-700" />,
+            icon: <ShieldCheck className="size-5" />,
             title: "Riêng tư & Bảo mật",
-            desc: "Thông tin nhạy cảm như số điện thoại, địa chỉ được phân quyền chặt chẽ. Chỉ thành viên được duyệt mới có quyền xem.",
+            desc: "Thông tin nhạy cảm được phân quyền chặt chẽ. Chỉ thành viên được duyệt mới có quyền truy cập.",
           },
         ].map((feature, idx) => (
           <motion.div
             key={idx}
             variants={fadeIn}
-            whileHover={{ y: -5 }}
-            className="card-feature flex flex-col items-start group relative overflow-hidden"
+            whileHover={{ y: -4 }}
+            className="flex flex-col p-6 group transition-all duration-300"
+            style={{
+              backgroundColor: "rgba(253,247,228,0.7)",
+              border: "1px solid rgba(201,169,110,0.45)",
+              borderTop: "2px solid #8B2020",
+            }}
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-amber-100/50 to-transparent rounded-bl-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-            <div className="p-3.5 bg-white rounded-2xl mb-6 shadow-sm ring-1 ring-stone-100 group-hover:scale-110 group-hover:shadow-md transition-all duration-300 relative z-10">
+            <div
+              className="p-2.5 mb-4 w-fit"
+              style={{
+                backgroundColor: "rgba(139,32,32,0.08)",
+                color: "#8B2020",
+              }}
+            >
               {feature.icon}
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-stone-800 mb-3 font-serif relative z-10 group-hover:text-amber-900 transition-colors">
+            <h3
+              className="font-serif font-bold text-lg mb-2 group-hover:transition-colors"
+              style={{ color: "#2C1810" }}
+            >
               {feature.title}
             </h3>
-            <p className="text-stone-600 text-base leading-relaxed relative z-10">
+            <p className="text-sm leading-relaxed" style={{ color: "#6B4232" }}>
               {feature.desc}
             </p>
           </motion.div>
         ))}
+      </motion.div>
+
+      {/* Hoa văn cuối trang */}
+      <motion.div variants={fadeIn} className="flex justify-center pb-4">
+        <OrnamentLine width={220} />
       </motion.div>
     </motion.div>
   );
