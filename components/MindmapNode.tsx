@@ -4,7 +4,7 @@ import { Person, Relationship } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import DefaultAvatar from "./DefaultAvatar";
 
 import { getAvatarBg } from "@/utils/styleHelprs";
@@ -54,26 +54,22 @@ export const MindmapNode = memo(
     const [isExpanded, setIsExpanded] = useState(
       ctx.autoCollapseLevel > 0 ? level < ctx.autoCollapseLevel : level < 2,
     );
-    const [lastSignalTs, setLastSignalTs] = useState(0);
-    const [lastCollapseLevel, setLastCollapseLevel] = useState(
-      ctx.autoCollapseLevel,
-    );
 
     // React to global expand/collapse signal
-    if (ctx.expandSignal && ctx.expandSignal.ts !== lastSignalTs) {
+    useEffect(() => {
+      if (!ctx.expandSignal) return;
       setIsExpanded(ctx.expandSignal.type === "expand");
-      setLastSignalTs(ctx.expandSignal.ts);
-    }
+    }, [ctx.expandSignal?.ts]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // React to autoCollapseLevel changes
-    if (ctx.autoCollapseLevel !== lastCollapseLevel) {
-      setLastCollapseLevel(ctx.autoCollapseLevel);
+    useEffect(() => {
       if (ctx.autoCollapseLevel > 0) {
         setIsExpanded(level < ctx.autoCollapseLevel);
       }
-    }
+    }, [ctx.autoCollapseLevel, level]);
 
     if (!data.person) return null;
+    const person = data.person;
 
     const hasChildren = data.children.length > 0;
 
@@ -130,28 +126,28 @@ export const MindmapNode = memo(
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
                 className={`group/card relative flex flex-wrap items-center gap-2 bg-white/60 rounded-2xl border border-stone-200/60 p-2 sm:p-2.5 shadow-sm hover:border-amber-300 hover:shadow-md hover:bg-white/90 transition-all duration-300 overflow-hidden cursor-pointer
-                ${data.person.is_deceased ? "opacity-80 grayscale-[0.3]" : ""}`}
-                onClick={() => ctx.setMemberModalId(data.person.id)}
+                ${person.is_deceased ? "opacity-80 grayscale-[0.3]" : ""}`}
+                onClick={() => ctx.setMemberModalId(person.id)}
               >
                 <div className="flex items-center gap-2.5 relative z-10 w-full">
                   <div className="flex flex-1 items-center gap-2.5 min-w-0">
                     {ctx.showAvatar && (
                       <div className="relative shrink-0">
                         <div
-                          className={`size-10 rounded-full overflow-hidden flex items-center justify-center text-white text-xs font-bold shadow-md ring-2 ring-white transition-transform duration-300 group-hover/card:scale-105 ${getAvatarBg(data.person.gender)}`}
+                          className={`size-10 rounded-full overflow-hidden flex items-center justify-center text-white text-xs font-bold shadow-md ring-2 ring-white transition-transform duration-300 group-hover/card:scale-105 ${getAvatarBg(person.gender)}`}
                         >
-                          {data.person.avatar_url ? (
+                          {person.avatar_url ? (
                             <Image
                               unoptimized
-                              src={data.person.avatar_url}
-                              alt={data.person.full_name}
+                              src={person.avatar_url}
+                              alt={person.full_name}
                               width={40}
                               height={40}
                               className="h-full w-full object-cover"
                             />
                           ) : (
                             <DefaultAvatar
-                              gender={data.person.gender}
+                              gender={person.gender}
                               size={40}
                             />
                           )}
@@ -160,7 +156,7 @@ export const MindmapNode = memo(
                     )}
                     <div className="flex flex-col min-w-0 flex-1">
                       <span className="font-bold text-[14px] text-stone-900 group-hover/card:text-amber-700 transition-colors leading-tight truncate mb-0.5">
-                        {data.person.full_name}
+                        {person.full_name}
                       </span>
                       <span className="text-[11px] text-stone-500 font-medium truncate flex items-center gap-1">
                         <svg
@@ -177,26 +173,26 @@ export const MindmapNode = memo(
                           />
                         </svg>
                         <span className="truncate">
-                          {data.person.birth_year || "Chưa rõ"}
-                          {data.person.is_deceased &&
-                            ` → ${data.person.death_lunar_year || data.person.death_year || "Chưa rõ"}`}
+                          {person.birth_year || "Chưa rõ"}
+                          {person.is_deceased &&
+                            ` → ${person.death_lunar_year || person.death_year || "Chưa rõ"}`}
                         </span>
                       </span>
-                      {(data.person.is_deceased || data.person.is_in_law) && (
+                      {(person.is_deceased || person.is_in_law) && (
                         <div className="flex flex-wrap items-center gap-1 mt-1.5 shrink-0">
-                          {data.person.is_in_law && (
+                          {person.is_in_law && (
                             <span
                               className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest shadow-xs border ${
-                                data.person.gender === "male"
+                                person.gender === "male"
                                   ? "bg-sky-50 text-sky-700 border-sky-200/60"
-                                  : data.person.gender === "female"
+                                  : person.gender === "female"
                                     ? "bg-rose-50 text-rose-700 border-rose-200/60"
                                     : "bg-stone-50 text-stone-700 border-stone-200/60"
                               }`}
                             >
-                              {data.person.gender === "male"
+                              {person.gender === "male"
                                 ? "Rể"
-                                : data.person.gender === "female"
+                                : person.gender === "female"
                                   ? "Dâu"
                                   : "Khách"}
                             </span>
