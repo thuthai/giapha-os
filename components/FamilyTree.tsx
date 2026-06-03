@@ -176,7 +176,7 @@ export default function FamilyTree({
       }
 
       data.children.forEach((child) =>
-        walk(child.id, new Set(visited), level + 1),
+        walk(child.id, visited, level + 1),
       );
     };
 
@@ -264,7 +264,7 @@ export default function FamilyTree({
                     toggleCollapse(personId);
                   }
                 }}
-                className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white border border-stone-200/80 rounded-full size-6 flex items-center justify-center shadow-md z-100 text-stone-500 hover:text-amber-600 hover:border-amber-300 transition-colors cursor-pointer"
+                className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white border border-stone-200/80 rounded-full size-6 flex items-center justify-center shadow-md z-[100] text-stone-500 hover:text-amber-600 hover:border-amber-300 transition-colors cursor-pointer"
                 title={isCollapsed ? "Mở rộng" : "Thu gọn"}
               >
                 {isCollapsed ? (
