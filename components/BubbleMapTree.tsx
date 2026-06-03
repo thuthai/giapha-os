@@ -1,6 +1,7 @@
 "use client";
 
 import { Person, Relationship } from "@/types";
+import { useMemberListView } from "@/context/MemberListContext";
 import { buildAdjacencyLists, getFilteredTreeData } from "@/utils/treeHelpers";
 import * as d3 from "d3";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -26,8 +27,6 @@ interface GraphLink extends d3.SimulationLinkDatum<GraphNode> {
   type: string;
 }
 
-const showAvatar = true;
-
 export default function BubbleMapTree({
   personsMap,
   relationships,
@@ -36,7 +35,7 @@ export default function BubbleMapTree({
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const [error, setError] = useState<Error | null>(null);
-  // const { showAvatar } = useMemberListView();
+  const { showAvatar } = useMemberListView();
 
   const adj = useMemo(
     () => buildAdjacencyLists(relationships, personsMap),
