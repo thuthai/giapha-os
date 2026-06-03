@@ -5,14 +5,23 @@ import Link from "next/link";
 
 export default function DashboardHeader() {
   return (
-    <header className="sticky top-0 z-30 bg-surface/80 backdrop-blur-xl border-b border-border shadow-soft transition-all duration-200">
+    <header
+      className="sticky top-0 z-30 backdrop-blur-xl border-b transition-all duration-200"
+      style={{
+        backgroundColor: "rgba(245,237,216,0.93)",
+        borderBottomColor: "rgba(201,169,110,0.55)",
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
             href="/dashboard"
             className="group flex items-center gap-2 sm:gap-3"
           >
-            <div className="relative size-8 rounded-xl overflow-hidden shrink-0 border border-border transition-all">
+            <div
+              className="relative size-8 overflow-hidden shrink-0 border transition-all"
+              style={{ borderColor: "rgba(201,169,110,0.5)" }}
+            >
               <Image
                 src="/icon.png"
                 alt="Logo"
@@ -21,7 +30,10 @@ export default function DashboardHeader() {
                 sizes="32px"
               />
             </div>
-            <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-800 group-hover:text-amber-700 transition-colors">
+            <h1
+              className="text-xl sm:text-2xl font-serif font-bold group-hover:text-[#8B2020] transition-colors"
+              style={{ color: "#2C1810" }}
+            >
               {config.siteName}
             </h1>
           </Link>
